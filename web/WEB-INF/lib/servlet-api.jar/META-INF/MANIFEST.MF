@@ -1,0 +1,64 @@
+Manifest-Version: 1.0
+Bundle-License: https://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-ManifestVersion: 2
+Bundle-Name: tomcat-servlet-api
+Bundle-SymbolicName: org.apache.tomcat-servlet-api
+Bundle-Version: 11.0.6
+Export-Package: jakarta.servlet;version="6.1";uses:="jakarta.servlet.a
+ nnotation,jakarta.servlet.descriptor",jakarta.servlet.annotation;vers
+ ion="6.1";uses:="jakarta.servlet",jakarta.servlet.descriptor;version=
+ "6.1",jakarta.servlet.http;version="6.1";uses:="jakarta.servlet",jaka
+ rta.servlet.resources;version="6.1"
+Import-Package: jakarta.servlet;version="[6.1,7)",jakarta.servlet.anno
+ tation;version="[6.1,7)",jakarta.servlet.descriptor;version="[6.1,7)"
+ ,java.io,java.lang,java.lang.annotation,java.lang.invoke,java.lang.re
+ flect,java.lang.runtime,java.net,java.nio,java.nio.charset,java.secur
+ ity,java.text,java.util,java.util.function
+Provide-Capability: osgi.contract;osgi.contract=JakartaServlet;version
+ :Version="6.1";uses:="jakarta.servlet,jakarta.servlet.annotation,jaka
+ rta.servlet.descriptor,jakarta.servlet.http,jakarta.servlet.resources
+ "
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=17))"
+X-Compile-Source-JDK: 17
+X-Compile-Target-JDK: 17
+
+Name: jakarta/servlet/
+Implementation-Title: jakarta.servlet
+Implementation-Vendor: Apache Software Foundation
+Implementation-Version: 6.1
+Specification-Title: Jakarta Servlet
+Specification-Vendor: Eclipse Foundation
+Specification-Version: 6.1
+
+Name: jakarta/servlet/annotation/
+Implementation-Title: jakarta.servlet
+Implementation-Vendor: Apache Software Foundation
+Implementation-Version: 6.1
+Specification-Title: Jakarta Servlet
+Specification-Vendor: Eclipse Foundation
+Specification-Version: 6.1
+
+Name: jakarta/servlet/descriptor/
+Implementation-Title: jakarta.servlet
+Implementation-Vendor: Apache Software Foundation
+Implementation-Version: 6.1
+Specification-Title: Jakarta Servlet
+Specification-Vendor: Eclipse Foundation
+Specification-Version: 6.1
+
+Name: jakarta/servlet/http/
+Implementation-Title: jakarta.servlet
+Implementation-Vendor: Apache Software Foundation
+Implementation-Version: 6.1
+Specification-Title: Jakarta Servlet
+Specification-Vendor: Eclipse Foundation
+Specification-Version: 6.1
+
+Name: jakarta/servlet/resources/
+Implementation-Title: jakarta.servlet
+Implementation-Vendor: Apache Software Foundation
+Implementation-Version: 6.1
+Specification-Title: Jakarta Servlet
+Specification-Vendor: Eclipse Foundation
+Specification-Version: 6.1
+

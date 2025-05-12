@@ -1,0 +1,118 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 960px;
+    margin: 60px auto;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #2c3e50;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: 600;
+}
+
+input[type="text"], input[type="password"], input[type="submit"], input[type="reset"] {
+    width: 100%;
+    padding: 10px;
+    /*margin-top: 6px;*/
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+input[type="submit"], input[type="reset"] {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover, input[type="reset"]:hover {
+    background-color: #2980b9;
+}
+
+.captcha-combo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.captcha-images img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
+.button-group {
+    margin-top: 20px;
+}
+
+input[type="text"], input[type="password"], select {
+    width: calc(100%);
+    padding:8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+
+input[type="text"], input[type="password"], input[type="submit"], input[type="reset"] {
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+input[type="submit"]:hover, input[type="reset"]:hover {
+    background-color: #2980b9;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #eee;
+}
