@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" import="java.util.*, com.work.bean.*, com.work.dao.*, java.sql.*, javax.servlet.*" %>
+<%@ page import="java.sql.Date" %>
+<%@ page import="java.time.LocalDate" %>
 <%
     if (session == null || session.getAttribute("userName") == null || "user".equals(session.getAttribute("role"))) {
         response.sendRedirect("unauthorized.jsp"); // 跳转到未授权页面
@@ -16,6 +18,7 @@
         UserDAO userDAO = new UserDAO(conn);
 
         if ("add".equals(action)) {
+            String endStr = request.getParameter("enddate");
             String name = request.getParameter("name");
             String content = request.getParameter("content");
             String[] members = request.getParameterValues("members");
@@ -23,8 +26,18 @@
             if (name != null && content != null) {
                 if (projectDAO.projectExistsByName(name)) {
                     msg = "❌ 项目名称已存在，请更换名称。";
+                } else if (endStr == null || endStr.isEmpty()) {
+                    msg = "❌ 请输入项目结束时间。";
+                } else if (members == null || members.length == 0) {
+                    msg = "❌ 请至少选择一名参与成员。";
                 } else {
                     Project p = new Project(name, content, "框架搭建");
+                    p.setStartDate(Date.valueOf(LocalDate.now()));
+                    String creator = (String) session.getAttribute("userName");
+                    p.setCreator(creator);
+                    if (endStr != null && !endStr.isEmpty()) {
+                        p.setEndDate(Date.valueOf(endStr));
+                    }
                     if (members != null) {
                         p.setAssignedMembers(Arrays.asList(members));
                     }
@@ -43,8 +56,11 @@
                 String newContent = request.getParameter("editContent");
                 String stage = request.getParameter("progressStage");
                 String[] members = request.getParameterValues("editMembers");
-
+                String endStr = request.getParameter("editEnddate");
                 Project p = new Project(newName, newContent, stage, id);
+                if (endStr != null && !endStr.isEmpty()) {
+                    p.setEndDate(Date.valueOf(endStr));
+                }
                 if (members != null) {
                     p.setAssignedMembers(Arrays.asList(members));
                 }
@@ -83,14 +99,16 @@
             msg = "编辑项目加载失败：" + e.getMessage();
         }
     }
-
 %>
 
 
 <html>
 <head>
     <title>部门项目管理</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- 放在<head>中 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -113,6 +131,14 @@
         }
         .form-group {
             margin-bottom: 20px;
+        }
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        .member-grid label {
+            font-weight: normal;
         }
         label {
             font-weight: 600;
@@ -158,8 +184,8 @@
     <p class="message"><%= msg %></p>
 
     <!-- 添加项目 -->
-    <form method="post" action="department.jsp">
-        <input type="hidden" name="action" value="add">
+    <form method="post" action="department.jsp" onsubmit="return validateAddForm()">
+    <input type="hidden" name="action" value="add">
         <h3>📌 添加新项目</h3>
         <div class="form-group">
             <label>项目名称</label>
@@ -170,12 +196,23 @@
             <textarea name="content" rows="4" required></textarea>
         </div>
         <div class="form-group">
-            <label>分配成员</label><br>
-            <% for (User u : users) { %>
-            <label><input type="checkbox" name="members" value="<%= u.getUsername() %>"> <%= u.getUsername() %></label><br>
-            <% } %>
+            <label>分配成员</label>
+            <div class="member-grid">
+                <% for (User u : users) { %>
+                <label><input type="checkbox" name="members" value="<%= u.getUsername() %>"> <%= u.getUsername() %></label>
+                <% } %>
+            </div>
         </div>
-        <input type="submit" value="添加项目">
+
+        <div class="form-group">
+            <label>项目结束时间</label>
+            <%
+                java.time.LocalDate today = java.time.LocalDate.now();
+            %>
+            <input type="date" name="enddate" required min="<%= today.plusDays(1) %>">
+        </div>
+
+        <input type="submit" value="添加项目" style="width: 100%">
     </form>
 
     <hr>
@@ -187,11 +224,12 @@
         <div class="form-group">
             <label>选择项目</label>
             <select name="projectId" id="editProjectSelect" onchange="fillForm()">
-                <option value="">-- 请选择项目 --</option>
+                <option value=""></option>
                 <% for (Project p : projects) { %>
                 <option value="<%= p.getId() %>"><%= p.getName() %></option>
                 <% } %>
             </select>
+
 
         </div>
         <div class="form-group">
@@ -213,12 +251,20 @@
             </select>
         </div>
         <div class="form-group">
-            <label>参与成员</label><br>
-            <% for (User u : users) { %>
-            <label><input type="checkbox" name="editMembers" value="<%= u.getUsername() %>" class="editMemberCheckbox"> <%= u.getUsername() %></label><br>
-            <% } %>
+            <label>项目结束时间（可选）</label>
+            <input type="date" name="editEnddate" id="editEnddate" value="<%= editProject != null && editProject.getEnddate() != null ? editProject.getEnddate().toString() : "" %>">
         </div>
-        <input type="submit" value="更新项目">
+
+        <div class="form-group">
+            <label>参与成员</label>
+            <div class="member-grid">
+                <% for (User u : users) { %>
+                <label><input type="checkbox" name="editMembers" value="<%= u.getUsername() %>" class="editMemberCheckbox"> <%= u.getUsername() %></label>
+                <% } %>
+            </div>
+        </div>
+
+        <input type="submit" value="更新项目" style="width: 100%">
     </form>
 
     <hr>
@@ -230,17 +276,43 @@
         <div class="form-group">
             <label>选择项目</label>
             <select name="projectId" id="projectIdDelete">
-                <option value="">-- 选择项目 --</option>
+                <option value=""></option>
                 <% for (Project p : projects) { %>
                 <option value="<%= p.getId() %>"><%= p.getName() %></option>
                 <% } %>
             </select>
+
         </div>
-        <input type="submit" value="删除项目">
+        <input type="submit" value="删除项目" style="width: 100%">
     </form>
 </div>
 
 <script>
+    const editSelect = new Choices('#editProjectSelect', {
+        searchEnabled: true,
+        itemSelectText: '',
+        placeholderValue: '请选择项目'
+    });
+
+    const deleteSelect = new Choices('#projectIdDelete', {
+        searchEnabled: true,
+        itemSelectText: '',
+        placeholderValue: '请选择项目'
+    });
+    function validateAddForm() {
+        const checkboxes = document.querySelectorAll('input[name="members"]:checked');
+        const endDate = document.querySelector('input[name="enddate"]').value;
+
+        if (checkboxes.length === 0) {
+            alert("❌ 请至少选择一名参与成员！");
+            return false;
+        }
+        if (!endDate) {
+            alert("❌ 请输入项目结束时间！");
+            return false;
+        }
+        return true;
+    }
     const projectData = {
         <% for (Project p : projects) { %>
         "<%= p.getId() %>": {

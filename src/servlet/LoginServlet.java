@@ -39,6 +39,8 @@ public class LoginServlet extends HttpServlet {
                 // 登录成功，存储用户名到 session
                 request.getSession().setAttribute("userName", username);  // 存储用户名
                 request.getSession().setAttribute("user", user);  // 存储完整的 User 对象（如需要）
+                request.getSession().setAttribute("role", user.getRole());  // 假设 User 类有 getRole() 方法
+                request.getSession().setAttribute("departmentName", user.getDepartment());
                 System.out.println("登录成功，设置 userName 为：" + username);
 
 

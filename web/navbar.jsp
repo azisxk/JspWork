@@ -1,4 +1,19 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import="com.work.bean.User, com.work.dao.ProjectDAO, com.work.util.DBUtil" %>
+<%@ page session="true" %>
+<%
+    String currentUserName = (String) session.getAttribute("userName");
+    int unfinishedCount = 0;
+
+    if (currentUserName != null) {
+        try (java.sql.Connection conn = DBUtil.getConnection()) {
+            ProjectDAO projectDAO = new ProjectDAO(conn);
+            unfinishedCount = projectDAO.countUnfinishedProjectsByUser(currentUserName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+%>
+
 <html>
 <head>
     <title>Title</title>
@@ -58,6 +73,24 @@
         body {
             margin-top: 70px; /* 防止内容被导航栏遮挡 */
         }
+        .badge {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            vertical-align: top;
+            margin-left: 6px;
+            box-shadow: 0 0 2px rgba(0,0,0,0.3);
+            padding: 0;
+            line-height: 1;
+            position: absolute; top: -4px; right: -6px;
+        }
 
         /* 响应式设计 */
         @media (max-width: 768px) {
@@ -85,33 +118,54 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 <div class="navbar">
     <div class="navbar-left">
-        <a href="index.jsp">首页</a>
-        <a href="admin.jsp">管理员中心</a>
-        <a href="department.jsp">部门管理</a>
-        <a href="personal.jsp">个人任务</a>
-        <a href="projectList.jsp">项目总览</a>
+        <a href="index.jsp"><i class="fas fa-home"></i> 首页</a>
+        <a href="admin.jsp"><i class="fas fa-user-shield"></i> 管理员中心</a>
+        <a href="department.jsp"><i class="fas fa-building"></i> 部门管理</a>
+        <%
+            String displayCount = unfinishedCount > 99 ? "99+" : String.valueOf(unfinishedCount);
+        %>
+        <a href="personal.jsp" id="personalTaskLink" style="position: relative;" title="你有 <%= unfinishedCount %> 个未完成项目">
+            <i class="fas fa-tasks"></i> 个人任务
+            <% if (unfinishedCount > 0) { %>
+            <span class="badge"><%= displayCount %></span>
+            <% } %>
+        </a>
+        <a href="projectList.jsp"><i class="fas fa-list"></i> 项目总览</a>
+        <%
+            String role = (String) session.getAttribute("role");
+            if ("super_department".equals(role)) {
+        %>
+        <a href="departmentManagement.jsp"><i class="fas fa-upload"></i> 任务发布</a>
+        <%
+        } else if ("sub_department".equals(role)) {
+        %>
+        <a href="taskManagement.jsp"><i class="fas fa-clipboard-list"></i> 任务管理</a>
+        <%
+            }
+        %>
     </div>
     <div class="navbar-right">
         <%
             String currentUser = (String) session.getAttribute("userName");
             if (currentUser != null) {
-                System.out.println("logined");
         %>
-        <span class="user-info">已登录：<%= currentUser %></span>
-        <a href="logout.jsp">退出</a>
+        <span class="user-info"><i class="fas fa-user-circle"></i> 已登录：<%= currentUser %></span>
+        <a href="logout.jsp"><i class="fas fa-sign-out-alt"></i> 退出</a>
         <%
         } else {
         %>
-        <a href="login.jsp">登录</a>
+        <a href="login.jsp"><i class="fas fa-sign-in-alt"></i> 登录</a>
         <%
             }
         %>
         &nbsp;&nbsp;&nbsp;&nbsp;
     </div>
 </div>
+
 </body>
 </html>

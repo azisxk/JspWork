@@ -9,11 +9,15 @@
         response.sendRedirect("login.jsp");  // 未登录，跳转登录页
         return;
     }
-
+    Connection conn = null;
+    UserDAO userDAO = null;
+    ProjectDAO projectDAO = null;
     List<Project> myProjects = new ArrayList<>();
 
-    try (Connection conn = com.work.util.DBUtil.getConnection()) {
-        ProjectDAO projectDAO = new ProjectDAO(conn);
+    try {
+        conn = com.work.util.DBUtil.getConnection();
+        userDAO = new UserDAO(conn);
+        projectDAO = new ProjectDAO(conn);
 
         // 更新进度操作
         if ("更新".equals(request.getParameter("action"))) {
@@ -175,6 +179,15 @@
                 <input type="submit" name="action" value="删除" style="background-color:#dc2525;width: 50%">
                 <% } %>
             </div>
+            <%
+                User creator = userDAO.getUser(p.getCreator());
+                if (creator != null) {
+            %>
+            <div>负责人：<%= creator.getUsername() %></div>
+            <div>联系方式：<%= creator.getContactInfo() %></div>
+            <% } else { %>
+            <div style="color:red;">⚠️ 无法加载负责人信息</div>
+            <% } %>
         </form>
     </div>
 
@@ -189,6 +202,16 @@
     </div>
     <% } %>
     <% } %>
+    <%
+        // 最后关闭连接
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    %>
 </div>
 
 </body>
