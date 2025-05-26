@@ -2,39 +2,182 @@
 <%
     request.setCharacterEncoding("UTF-8");
     String msg = request.getParameter("msg") != null ? request.getParameter("msg") : "";
+    String sortField = request.getParameter("sort") != null ? request.getParameter("sort") : "name";
+    String sortOrder = request.getParameter("order") != null ? request.getParameter("order") : "asc";
 
     List<Project> projects = new ArrayList<>();
     try {
         Connection conn = com.work.util.DBUtil.getConnection();
         ProjectDAO projectDAO = new ProjectDAO(conn);
         projects = projectDAO.getAllProjects();
+        // 假设ProjectDAO有一个方法可以根据字段和顺序排序
+        // projects = projectDAO.getAllProjectsSortedBy(sortField, sortOrder);
     } catch (SQLException e) {
         e.printStackTrace();
         msg = "加载项目失败：" + e.getMessage();
     }
+    Collections.sort(projects, new Comparator<Project>() {
+        @Override
+        public int compare(Project p1, Project p2) {
+            if ("name".equals(sortField)) {
+                return sortOrder.equals("asc") ? p1.getName().compareTo(p2.getName()) : p2.getName().compareTo(p1.getName());
+            } else if ("progress".equals(sortField)) {
+                return sortOrder.equals("asc") ? p1.getProgressStage().compareTo(p2.getProgressStage()) : p2.getProgressStage().compareTo(p1.getProgressStage());
+            }
+            return 0;
+        }
+    });
 %>
-
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首页</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* 样式保持不变 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #495057;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .text-over-image {
+            position: relative;
+            height: 100vh; /* 容器高度占视口的60% */
+            overflow: hidden;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 12px;
+        }
+
+        .text-over-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            transform: translateZ(0); /* 启用硬件加速 */
+            will-change: transform; /* 提示浏览器优化性能 */
+            border-radius: 12px;
+        }
+
+        .text-over-image .text {
+            position: absolute;
+            color: white;
+            top: 0;        /* 覆盖整个图片区域 */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 20px;
+            background: transparent; /* 透明背景 */
+            opacity: 0;                     /* 默认隐藏 */
+            transition: opacity 0.5s ease;  /* 过渡效果 */
+            border-radius: 12px;
+        }
+        .text-over-image:hover .text {
+            opacity: 1;
+        }
+        .text-over-image .text ul {
+            transform: translateY(20px);    /* 初始位置下移 */
+            transition: transform 0.5s ease;
+        }
+
+        .text-over-image:hover .text ul {
+            transform: translateY(0);       /* 悬停时回到原位 */
+        }
+
+        .text-over-image h2 {
+            margin-top: 0;
+            color: white;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("img/hero.jpg");
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px);
+            z-index: -1; /* 确保在内容之下 */
+        }
+
+
     </style>
 </head>
 <body>
-<jsp:include page="navbar.jsp"/>
 
-<div class="container">
+
+<div class="text-over-image">
+    <img src="img/hero.jpg" alt="公告图片">
+
+    <div class="text">
+        <h2>部门信息交互系统</h2>
+        <ul>
+            <li>上级部门可以新建项目，发布项目要求，并对下级部门的任务要求进行分配，一个项目可以发布为多个部门同时负责</li>
+            <li>下级部门接收任务，对该任务进行人员指派，可以指派一人或多人来负责该项目，由该部门来进行细则分配任务到个人用户</li>
+            <li>项目进度由部门级用户进行提交，系统根据完成度，反馈给上级部门</li>
+        </ul>
+    </div>
+</div>
+    <div class="container">
+        <jsp:include page="navbar.jsp"/>
     <h2>项目列表</h2>
     <p class="message"><%= msg %></p>
+    <div style="display: flex; align-items: center; gap: 120px;">
+        <div style="white-space: nowrap;">
+            <label for="sortField">排序字段:</label>
+            <select id="sortField" onchange="location.href='?sort='+this.value+'&order=asc'">
+                <option value="name" <%= sortField.equals("name") ? "selected" : "" %>>项目名称</option>
+                <option value="progress" <%= sortField.equals("progress") ? "selected" : "" %>>进度</option>
+            </select>
+        </div>
+
+        <div style="white-space: nowrap;">
+            <label for="sortOrder">排序顺序:</label>
+            <select id="sortOrder" onchange="location.href='?sort=<%= sortField %>&order='+this.value">
+                <option value="asc" <%= sortOrder.equals("asc") ? "selected" : "" %>>升序</option>
+                <option value="desc" <%= sortOrder.equals("desc") ? "selected" : "" %>>降序</option>
+            </select>
+        </div>
+    </div>
+
 
     <!-- 项目展示 -->
     <h3>所有项目</h3>
     <% if (projects != null && !projects.isEmpty()) { %>
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
         <thead>
-        <tr style="background-color: #3498db; color: #000;">
+        <tr style="background-color: #34495e; color: #000;">
             <th>项目名称</th>
             <th>进度</th>
             <th>操作</th>
@@ -56,6 +199,31 @@
     <% } else { %>
     <p>暂无项目。</p>
     <% } %>
-</div>
+        <div style="display: flex; gap: 20px; margin-top: 30px;">
+            <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                <h4>新建项目</h4>
+                <p><a href="department.jsp?action=create">点击创建新项目</a></p>
+            </div>
+            <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                <h4>查看任务</h4>
+                <p><a href="personal.jsp">进入个人任务中心</a></p>
+            </div>
+            <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                <h4>项目总览</h4>
+                <p><a href="projectList.jsp">查看所有项目</a></p>
+            </div>
+        </div>
+
+    </div>
 </body>
+<script>
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const img = document.querySelector('.text-over-image img');
+        const speed = 0.1; // 速度系数，值越小视差越明显
+        if (img) {
+            img.style.transform = `translateY(${scrolled * speed}px)`;
+        }
+    });
+</script>
 </html>
