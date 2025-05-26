@@ -153,13 +153,25 @@
             <td><%= u.getUsername() %></td>
             <td>
                 <%
-                    String roleLabel = switch (u.getRole()) {
-                        case "admin" -> "管理员";
-                        case "super_department" -> "上级部门";
-                        case "sub_department" -> "下级部门";
-                        case "user" -> "个人级用户";
-                        default -> "未知";
-                    };
+                    String roleLabel;
+                    String role = u.getRole();
+                    switch (role) {
+                        case "admin":
+                            roleLabel = "管理员";
+                            break;
+                        case "super_department":
+                            roleLabel = "上级部门";
+                            break;
+                        case "sub_department":
+                            roleLabel = "下级部门";
+                            break;
+                        case "user":
+                            roleLabel = "个人级用户";
+                            break;
+                        default:
+                            roleLabel = "未知";
+                            break;
+                    }
                 %>
                 <%= roleLabel %>
             </td>
