@@ -133,7 +133,7 @@
             <i class="fas fa-tasks"></i> 个人任务
             <% if (unfinishedCount > 0) { %>
             <span class="badge"><%= displayCount %></span>
-            <% } %>
+            <% } %><%= "当前用户：" + currentUserName + " 未完成数：" + unfinishedCount %>
         </a>
         <a href="projectList.jsp"><i class="fas fa-list"></i> 项目总览</a>
         <%
