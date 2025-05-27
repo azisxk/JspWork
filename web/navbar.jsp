@@ -5,12 +5,15 @@
     int unfinishedCount = 0;
 
     if (currentUserName != null) {
+        out.println("当前 session 用户名：" + currentUserName);
         try (java.sql.Connection conn = DBUtil.getConnection()) {
             ProjectDAO projectDAO = new ProjectDAO(conn);
             unfinishedCount = projectDAO.countUnfinishedProjectsByUser(currentUserName);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    } else {
+        out.println("⚠️ 当前 session 中没有 userName！");
     }
 %>
 
@@ -133,8 +136,9 @@
             <i class="fas fa-tasks"></i> 个人任务
             <% if (unfinishedCount > 0) { %>
             <span class="badge"><%= displayCount %></span>
-            <% } %><%= "当前用户：" + currentUserName + " 未完成数：" + unfinishedCount %>
+            <% } %>
         </a>
+        <%= "当前用户：" + currentUserName + " 未完成数：" + unfinishedCount %>
         <a href="projectList.jsp"><i class="fas fa-list"></i> 项目总览</a>
         <%
             String role = (String) session.getAttribute("role");
