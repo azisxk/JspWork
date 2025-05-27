@@ -126,7 +126,7 @@
     <div class="navbar-left">
         <a href="index.jsp"><i class="fas fa-home"></i> 首页</a>
         <a href="admin.jsp"><i class="fas fa-user-shield"></i> 管理员中心</a>
-        <a href="department.jsp"><i class="fas fa-building"></i> 部门管理</a>
+<%--        <a href="department.jsp"><i class="fas fa-building"></i> 部门管理</a>--%>
         <%
             String displayCount = unfinishedCount > 99 ? "99+" : String.valueOf(unfinishedCount);
         %>
