@@ -130,7 +130,7 @@ public class ProjectDAO {
                 "FROM projects p " +
                 "LEFT JOIN project_members pm ON p.id = pm.project_id " +
                 "LEFT JOIN users u ON pm.user_id = u.id " +
-                "WHERE (p.creator = ? OR u.username = ?) " +
+                "WHERE (u.username = ?) " +
                 "AND p.progress_stage <> '部署完成'";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
