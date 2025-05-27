@@ -61,7 +61,7 @@
         }
         .text-over-image {
             position: relative;
-            height: 100vh; /* 容器高度占视口的100% */
+            height: 680px; /* 容器高度占视口的100% */
             overflow: hidden;
             width: 100%;
             max-width: 1100px;
