@@ -130,11 +130,12 @@ public class ProjectDAO {
                 "FROM projects p " +
                 "LEFT JOIN project_members pm ON p.id = pm.project_id " +
                 "LEFT JOIN users u ON pm.user_id = u.id " +
-                "WHERE u.username = ? " +
+                "WHERE (u.username = ?) " +
                 "AND p.progress_stage <> '部署完成'";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
+            ps.setString(2, username);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1);
@@ -143,7 +144,6 @@ public class ProjectDAO {
         }
         return 0;
     }
-
 
 
 
