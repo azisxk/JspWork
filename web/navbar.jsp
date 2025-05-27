@@ -142,6 +142,7 @@
             if ("super_department".equals(role)) {
         %>
         <a href="departmentManagement.jsp"><i class="fas fa-upload"></i> 任务发布</a>
+        <a href="taskManagement.jsp"><i class="fas fa-clipboard-list"></i> 任务管理</a>
         <%
         } else if ("sub_department".equals(role)) {
         %>
