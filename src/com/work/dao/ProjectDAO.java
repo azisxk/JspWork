@@ -128,22 +128,25 @@ public class ProjectDAO {
     public int countUnfinishedProjectsByUser(String username) throws SQLException {
         String sql = "SELECT COUNT(DISTINCT p.id) " +
                 "FROM projects p " +
-                "LEFT JOIN project_members pm ON p.id = pm.project_id " +
-                "LEFT JOIN users u ON pm.user_id = u.id " +
+                "JOIN project_members pm ON p.id = pm.project_id " +
+                "JOIN users u ON pm.user_id = u.id " +
                 "WHERE u.username = ? " +
                 "AND p.progress_stage <> '部署完成'";
 
+        System.out.println("Executing SQL for user: " + username);
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, username);  // 只设置一次
+            ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1);
+                    int count = rs.getInt(1);
+                    System.out.println("Query result count: " + count);
+                    return count;
                 }
             }
         }
         return 0;
     }
-
 
 
 

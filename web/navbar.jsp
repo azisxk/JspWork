@@ -118,24 +118,6 @@
                 margin-top: 5px;
             }
         }
-
-        /* 调试输出样式 */
-        .debug-info {
-            padding: 10px;
-            font-weight: bold;
-        }
-        .debug-info.success {
-            color: green;
-            background-color: #e6ffe6;
-            border: 1px solid green;
-            margin-bottom: 10px;
-        }
-        .debug-info.error {
-            color: red;
-            background-color: #ffe6e6;
-            border: 1px solid red;
-            margin-bottom: 10px;
-        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
