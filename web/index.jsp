@@ -61,11 +61,11 @@
         }
         .text-over-image {
             position: relative;
-            height: 100vh; /* 容器高度占视口的60% */
+            height: 100vh; /* 容器高度占视口的100% */
             overflow: hidden;
             width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 1100px;
+            margin: 20px auto;
             border-radius: 12px;
         }
 
@@ -199,22 +199,35 @@
     <% } else { %>
     <p>暂无项目。</p>
     <% } %>
-        <div style="display: flex; gap: 20px; margin-top: 30px;">
-            <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-                <h4>新建项目</h4>
-                <p><a href="department.jsp?action=create">点击创建新项目</a></p>
-            </div>
-            <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-                <h4>查看任务</h4>
-                <p><a href="personal.jsp">进入个人任务中心</a></p>
-            </div>
-            <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-                <h4>项目总览</h4>
-                <p><a href="projectList.jsp">查看所有项目</a></p>
-            </div>
+    </div>
+
+<div class="container">
+    <h2 style="text-align: center">我们的优势</h2>
+    <h5 style="text-align: center; color: rgba(128, 128, 128, 0.5);">our advantages</h5>
+    <section class="advantages">
+        <div class="advantage">
+            <div class="icon"><i class="fas fa-server"></i></div>
+            <h3>分工明确</h3>
+            <p class="advantage-content">上下级分工，减少重复工作</p>
+        </div>
+        <div class="advantage">
+            <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+            <h3>节省成本</h3>
+            <p class="advantage-content">节省人力维护和时间成本</p>
+        </div>
+        <div class="advantage">
+            <div class="icon"><i class="fas fa-shield-alt"></i></div>
+            <h3>安全可靠</h3>
+            <p class="advantage-content">保障用户信息安全</p>
         </div>
 
-    </div>
+        <div class="advantage">
+            <div class="icon"><i class="fas fa-clock"></i></div>
+            <h3>快速响应</h3>
+            <p class="advantage-content">项目进度实时显示</p>
+        </div>
+    </section>
+</div>
 </body>
 <script>
     window.addEventListener('scroll', function() {

@@ -6,12 +6,12 @@ body {
 }
 
 .container {
-    width: 90%;
+    width: 100%;
     max-width: 1000px;
     margin: 30px auto;
     background-color: #fff;
     padding: 30px 40px;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -117,4 +117,48 @@ th, td {
 
 th {
     background-color: #eee;
+}
+
+/* 在 styles.css 中添加以下内容 */
+
+.advantages {
+    display: flex;
+    justify-content: space-between; /* 水平间距分配 */
+    align-items: center; /* 垂直居中 */
+    flex-wrap: nowrap; /* 关键：禁止换行 */
+    overflow-x: auto; /* 容器宽度不足时允许横向滚动 */
+    margin-top: 30px;
+    padding-bottom: 10px;
+}
+
+.advantage {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 10%; /* 固定宽度 */
+    transition: transform 0.3s ease;
+}
+
+.advantage:hover {
+    transform: translateY(-5px);
+}
+
+.advantage .icon {
+    font-size: 2em;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+.advantage h3 {
+    font-size: 1.2em;
+    color: #333;
+    margin: 10px 0;
+}
+
+.advantage-content {
+    font-size: 0.9em;
+    color: #666;
+    line-height: 1.6;
 }
