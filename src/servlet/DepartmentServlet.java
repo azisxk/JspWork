@@ -6,9 +6,9 @@ import com.work.dao.ProjectDAO;
 import com.work.dao.UserDAO;
 import com.work.util.DBUtil;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.*;
