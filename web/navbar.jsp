@@ -124,11 +124,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-<div style="color:red;">
-    <%
-        out.println("【调试输出】当前用户是：" + currentUserName);
-    %>
-</div>
+<%
+    out.println("<div style='color:red; font-weight:bold;'>【调试输出】当前用户是：" + currentUserName + "</div>");
+%>
 <div class="navbar">
     <div class="navbar-left">
         <a href="index.jsp"><i class="fas fa-home"></i> 首页</a>
