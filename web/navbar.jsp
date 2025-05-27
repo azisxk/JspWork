@@ -124,13 +124,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+<div style="color:red;">
+    <%
+        out.println("【调试输出】当前用户是：" + currentUserName);
+    %>
+</div>
 <div class="navbar">
     <div class="navbar-left">
-        <div style="color:red;">
-            <%
-                out.println("【调试输出】当前用户是：" + currentUserName);
-            %>
-        </div>
         <a href="index.jsp"><i class="fas fa-home"></i> 首页</a>
         <a href="admin.jsp"><i class="fas fa-user-shield"></i> 管理员中心</a>
         <a href="department.jsp"><i class="fas fa-building"></i> 部门管理</a>
