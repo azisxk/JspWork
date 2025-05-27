@@ -5,15 +5,12 @@
     int unfinishedCount = 0;
 
     if (currentUserName != null) {
-        out.println("当前 session 用户名：" + currentUserName);
         try (java.sql.Connection conn = DBUtil.getConnection()) {
             ProjectDAO projectDAO = new ProjectDAO(conn);
             unfinishedCount = projectDAO.countUnfinishedProjectsByUser(currentUserName);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } else {
-        out.println("⚠️ 当前 session 中没有 userName！");
     }
 %>
 
@@ -76,6 +73,7 @@
         body {
             margin-top: 70px; /* 防止内容被导航栏遮挡 */
         }
+
         .badge {
             display: inline-flex;
             justify-content: center;
@@ -120,13 +118,41 @@
                 margin-top: 5px;
             }
         }
+
+        /* 调试输出样式 */
+        .debug-info {
+            padding: 10px;
+            font-weight: bold;
+        }
+        .debug-info.success {
+            color: green;
+            background-color: #e6ffe6;
+            border: 1px solid green;
+            margin-bottom: 10px;
+        }
+        .debug-info.error {
+            color: red;
+            background-color: #ffe6e6;
+            border: 1px solid red;
+            margin-bottom: 10px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+
 <%
-    out.println("<div style='color:red; font-weight:bold;'>【调试输出】当前用户是：" + currentUserName + "</div>");
+    if (currentUserName == null) {
 %>
+<div class="debug-info error">⚠️ 当前 session 中没有 userName！</div>
+<%
+} else {
+%>
+<div class="debug-info success">当前 session 用户名：<%= currentUserName %></div>
+<%
+    }
+%>
+
 <div class="navbar">
     <div class="navbar-left">
         <a href="index.jsp"><i class="fas fa-home"></i> 首页</a>
@@ -158,10 +184,9 @@
     </div>
     <div class="navbar-right">
         <%
-            String currentUser = (String) session.getAttribute("userName");
-            if (currentUser != null) {
+            if (currentUserName != null) {
         %>
-        <span class="user-info"><i class="fas fa-user-circle"></i> 已登录：<%= currentUser %></span>
+        <span class="user-info"><i class="fas fa-user-circle"></i> 已登录：<%= currentUserName %></span>
         <a href="logout.jsp"><i class="fas fa-sign-out-alt"></i> 退出</a>
         <%
         } else {
