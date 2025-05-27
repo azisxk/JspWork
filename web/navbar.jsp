@@ -140,22 +140,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-
-<%
-    if (currentUserName == null) {
-%>
-<div class="debug-info error">⚠️ 当前 session 中没有 userName！</div>
-<%
-} else {
-%>
-<div class="debug-info success">当前 session 用户名：<%= currentUserName %></div>
-<%
-    }
-%>
-
 <div class="navbar">
     <div class="navbar-left">
-        <a href="index.jsp"><i class="fas fa-home"></i> 测测首页</a>
+        <a href="index.jsp"><i class="fas fa-home"></i> 首页</a>
         <a href="admin.jsp"><i class="fas fa-user-shield"></i> 管理员中心</a>
         <a href="department.jsp"><i class="fas fa-building"></i> 部门管理</a>
         <%
@@ -167,7 +154,6 @@
             <span class="badge"><%= displayCount %></span>
             <% } %>
         </a>
-        <%= "当前用户：" + currentUserName + " 未完成数：" + unfinishedCount %>
         <a href="projectList.jsp"><i class="fas fa-list"></i> 项目总览</a>
         <%
             String role = (String) session.getAttribute("role");
