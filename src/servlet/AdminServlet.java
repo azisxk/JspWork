@@ -3,6 +3,7 @@ package servlet;
 import com.work.bean.User;
 import com.work.dao.UserDAO;
 import com.work.util.DBUtil;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,7 +30,7 @@ public class AdminServlet extends HttpServlet {
 
         try (Connection conn = DBUtil.getConnection()) {
             UserDAO userDAO = new UserDAO(conn);
-
+            String successMessage = "";
             switch (action) {
                 case "add":
                     String newUsername = request.getParameter("newUsername");
@@ -50,6 +51,7 @@ public class AdminServlet extends HttpServlet {
                         newUser.setDepartment(newDepartment); // 设置部门
                         userDAO.addUserAndReturnId(newUser);
                     }
+                    successMessage = "用户添加成功！";
                     break;
 
 
@@ -58,6 +60,7 @@ public class AdminServlet extends HttpServlet {
                     if (deleteUsername != null) {
                         userDAO.removeUser(deleteUsername);
                     }
+                    successMessage = "用户删除成功！";
                     break;
 
                 case "modifyRole":
@@ -84,15 +87,22 @@ public class AdminServlet extends HttpServlet {
                     if (modUsername != null && modRole != null) {
                         userDAO.updateUserDetails(modUsername, modRole, modContact, modDepartment);
                     }
+                    successMessage = "用户信息修改成功！";
                     break;
             }
-
-            response.sendRedirect("admin.jsp");
+            request.setAttribute("successMessage", successMessage);
+            request.setAttribute("actionType", action);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
+            dispatcher.forward(request, response);
+//            response.sendRedirect("admin.jsp");
 
         } catch (SQLException e) {
             e.printStackTrace();
             request.getSession().setAttribute("adminError", "操作失败：" + e.getMessage());
             response.sendRedirect("admin.jsp");
         }
+
+
+
     }
 }

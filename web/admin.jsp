@@ -91,6 +91,12 @@
 
 <div class="container">
     <h2 id="adduser">添加用户</h2>
+    <% if (request.getAttribute("successMessage") != null && "add".equals(request.getAttribute("actionType"))) { %>
+    <p style="color:green;"><%= request.getAttribute("successMessage") %></p>
+    <% } %>
+    <% if (request.getAttribute("message") != null) { %>
+    <p style="color:red;"><%= request.getAttribute("message") %></p>
+    <% } %>
     <form method="post" action="adminServlet">
         <% if (request.getAttribute("message") != null) { %>
         <p style="color:red;"><%= request.getAttribute("message") %></p>
@@ -125,6 +131,10 @@
     </form>
 
     <h2>删除用户</h2>
+    <% if (request.getAttribute("successMessage") != null && "delete".equals(request.getAttribute("actionType"))) { %>
+    <p style="color:green;"><%= request.getAttribute("successMessage") %></p>
+    <% } %>
+
     <form method="post" action="adminServlet">
         <input type="hidden" name="action" value="delete">
         <div class="form-group">
