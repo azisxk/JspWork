@@ -73,6 +73,7 @@
         body {
             margin-top: 70px; /* 防止内容被导航栏遮挡 */
         }
+
         .badge {
             display: inline-flex;
             justify-content: center;
@@ -151,10 +152,9 @@
     </div>
     <div class="navbar-right">
         <%
-            String currentUser = (String) session.getAttribute("userName");
-            if (currentUser != null) {
+            if (currentUserName != null) {
         %>
-        <span class="user-info"><i class="fas fa-user-circle"></i> 已登录：<%= currentUser %></span>
+        <span class="user-info"><i class="fas fa-user-circle"></i> 已登录：<%= currentUserName %></span>
         <a href="logout.jsp"><i class="fas fa-sign-out-alt"></i> 退出</a>
         <%
         } else {
