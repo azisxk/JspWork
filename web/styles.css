@@ -137,7 +137,7 @@ th {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     text-align: center;
-    width: 10%; /* 固定宽度 */
+    width: 18%; /* 固定宽度 */
     transition: transform 0.3s ease;
 }
 
