@@ -94,9 +94,9 @@
     <% if (request.getAttribute("successMessage") != null && "add".equals(request.getAttribute("actionType"))) { %>
     <p style="color:green;"><%= request.getAttribute("successMessage") %></p>
     <% } %>
-    <% if (request.getAttribute("message") != null) { %>
-    <p style="color:red;"><%= request.getAttribute("message") %></p>
-    <% } %>
+<%--    <% if (request.getAttribute("message") != null) { %>--%>
+<%--    <p style="color:red;"><%= request.getAttribute("message") %></p>--%>
+<%--    <% } %>--%>
     <form method="post" action="adminServlet">
         <% if (request.getAttribute("message") != null) { %>
         <p style="color:red;"><%= request.getAttribute("message") %></p>
