@@ -189,7 +189,7 @@
             <td><%= p.getName() %></td>
             <td><%= p.getProgressStage() %></td>
             <td>
-                <a href="taskManagement.jsp?action=edit&projectId=<%= p.getId() %>" style="color: #3498db; text-decoration: none;">编辑</a> |
+                <a href="taskManagement.jsp?" style="color: #3498db; text-decoration: none;">编辑</a> |
                 <a href="department.jsp?action=delete&projectId=<%= p.getId() %>" style="color: #e74c3c; text-decoration: none;">删除</a>
             </td>
         </tr>

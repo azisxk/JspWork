@@ -8,7 +8,7 @@
     String role = (String) session.getAttribute("role");
     String currentDept = (String) session.getAttribute("departmentName"); // 假设session存了当前部门名
     if (role == null || !role.equals("sub_department") && !role.equals("super_department")) {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("unauthorized.jsp");
         return;
     }
 
