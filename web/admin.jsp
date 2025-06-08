@@ -84,6 +84,13 @@
         .operation-cell .btn-submit:hover {
             background-color: #0056b3;
         }
+        table {
+            width: 100%;
+            table-layout: fixed;
+            word-wrap: break-word;
+            overflow-x: auto;
+        }
+
     </style>
 </head>
 <body>
@@ -190,27 +197,38 @@
                     <form method="post" action="adminServlet">
                         <input type="hidden" name="modifyUsername" value="<%=u.getUsername()%>">
                         <% if ("admin".equals(u.getRole())) { %>
-                        <input type="hidden" name="action" value="modifyContactOnly">
+                        <input type="hidden" name="action" value="modifyContactAndDepartment">
+
+                        <!-- 联系方式输入 -->
                         <input type="text" name="modifyContactInfo"
-                               value="<%=u.getContactInfo() == null ? "" : u.getContactInfo() %>"
+                               value="<%= u.getContactInfo() == null ? "" : u.getContactInfo() %>"
                                placeholder="联系方式">
+
+                        <!-- 部门输入 -->
+                        <input type="text" name="modifyDepartment"
+                               value="<%= u.getDepartment() == null ? "" : u.getDepartment() %>"
+                               placeholder="部门">
                         <% } else { %>
                         <input type="hidden" name="action" value="modifyRoleAndContact">
 
+                        <!-- 角色选择 -->
                         <select name="modifyRole" required>
                             <option value="super_department" <%="super_department".equals(u.getRole()) ? "selected" : ""%>>上级部门</option>
                             <option value="sub_department" <%="sub_department".equals(u.getRole()) ? "selected" : ""%>>下级部门</option>
                             <option value="user" <%="user".equals(u.getRole()) ? "selected" : ""%>>个人级用户</option>
                         </select>
 
+                        <!-- 联系方式 -->
                         <input type="text" name="modifyContactInfo"
-                               value="<%=u.getContactInfo() == null ? "" : u.getContactInfo() %>"
+                               value="<%= u.getContactInfo() == null ? "" : u.getContactInfo() %>"
                                placeholder="联系方式">
 
+                        <!-- 部门 -->
                         <input type="text" name="modifyDepartment"
                                value="<%= u.getDepartment() == null ? "" : u.getDepartment() %>"
                                placeholder="部门">
                         <% } %>
+
                         <input type="submit" value="修改" class="btn-submit">
                     </form>
                 </div>
