@@ -86,10 +86,54 @@
         }
         table {
             width: 100%;
+            border-collapse: collapse;
             table-layout: fixed;
-            word-wrap: break-word;
-            overflow-x: auto;
         }
+
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+            word-wrap: break-word;
+            vertical-align: middle;
+        }
+
+        td .operation-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        td .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+
+        td input[type="text"],
+        td select {
+            padding: 4px;
+            min-width: 120px;
+            max-width: 150px;
+            box-sizing: border-box;
+        }
+
+        .btn-submit {
+            padding: 4px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+
 
     </style>
 </head>
@@ -198,41 +242,35 @@
                         <input type="hidden" name="modifyUsername" value="<%=u.getUsername()%>">
                         <% if ("admin".equals(u.getRole())) { %>
                         <input type="hidden" name="action" value="modifyContactAndDepartment">
-
-                        <!-- 联系方式输入 -->
-                        <input type="text" name="modifyContactInfo"
-                               value="<%= u.getContactInfo() == null ? "" : u.getContactInfo() %>"
-                               placeholder="联系方式">
-
-                        <!-- 部门输入 -->
-                        <input type="text" name="modifyDepartment"
-                               value="<%= u.getDepartment() == null ? "" : u.getDepartment() %>"
-                               placeholder="部门">
+                        <div class="form-group">
+                            <input type="text" name="modifyContactInfo"
+                                   value="<%= u.getContactInfo() == null ? "" : u.getContactInfo() %>"
+                                   placeholder="联系方式">
+                            <input type="text" name="modifyDepartment"
+                                   value="<%= u.getDepartment() == null ? "" : u.getDepartment() %>"
+                                   placeholder="部门">
+                        </div>
                         <% } else { %>
                         <input type="hidden" name="action" value="modifyRoleAndContact">
-
-                        <!-- 角色选择 -->
-                        <select name="modifyRole" required>
-                            <option value="super_department" <%="super_department".equals(u.getRole()) ? "selected" : ""%>>上级部门</option>
-                            <option value="sub_department" <%="sub_department".equals(u.getRole()) ? "selected" : ""%>>下级部门</option>
-                            <option value="user" <%="user".equals(u.getRole()) ? "selected" : ""%>>个人级用户</option>
-                        </select>
-
-                        <!-- 联系方式 -->
-                        <input type="text" name="modifyContactInfo"
-                               value="<%= u.getContactInfo() == null ? "" : u.getContactInfo() %>"
-                               placeholder="联系方式">
-
-                        <!-- 部门 -->
-                        <input type="text" name="modifyDepartment"
-                               value="<%= u.getDepartment() == null ? "" : u.getDepartment() %>"
-                               placeholder="部门">
+                        <div class="form-group">
+                            <select name="modifyRole" required>
+                                <option value="super_department" <%="super_department".equals(u.getRole()) ? "selected" : ""%>>上级部门</option>
+                                <option value="sub_department" <%="sub_department".equals(u.getRole()) ? "selected" : ""%>>下级部门</option>
+                                <option value="user" <%="user".equals(u.getRole()) ? "selected" : ""%>>个人级用户</option>
+                            </select>
+                            <input type="text" name="modifyContactInfo"
+                                   value="<%= u.getContactInfo() == null ? "" : u.getContactInfo() %>"
+                                   placeholder="联系方式">
+                            <input type="text" name="modifyDepartment"
+                                   value="<%= u.getDepartment() == null ? "" : u.getDepartment() %>"
+                                   placeholder="部门">
+                        </div>
                         <% } %>
-
                         <input type="submit" value="修改" class="btn-submit">
                     </form>
                 </div>
             </td>
+
         </tr>
         <% } %>
     </table>
